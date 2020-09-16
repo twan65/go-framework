@@ -19,6 +19,7 @@ func (r *Router) HandleFunc(method, pattern string, h http.HandlerFunc) {
 	if !ok {
 		// 新しいmapを作成
 		m = make(map[string]http.HandlerFunc)
+		r.Handlers[method] = m
 	}
 
 	// httpメソッドで登録されているmapにURLパターンとハンドラ関数を登録
@@ -35,6 +36,7 @@ func (r *Router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
 			return
 		}
 	}
+
 	// ハンドラが見つからなかった場合NotFoundエラー処理
 	http.NotFound(w, req)
 	return
@@ -61,7 +63,7 @@ func match(pattern, path string) (bool, map[string]string) {
 	for i := 0; i < len(patterns); i++ {
 		switch {
 		case patterns[i] == paths[i]:
-		case len(patterns) > 0 && patterns[i][0] == ':':
+		case len(patterns[i]) > 0 && patterns[i][0] == ':':
 			params[patterns[i][1:]] = paths[i]
 		default:
 			return false, nil

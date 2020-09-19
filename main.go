@@ -16,10 +16,10 @@ func main() {
 		fmt.Fprintln(c.ResponseWriter, "about")
 	})
 
-	r.HandleFunc("GET", "/users/:id", func(c *Context) {
+	r.HandleFunc("GET", "/users/:id", logHandler(recoverHandler(func(c *Context) {
 		fmt.Fprintf(c.ResponseWriter, "retrieve user %v\n",
 			c.Params["id"])
-	})
+	})))
 
 	r.HandleFunc("GET", "/users/:user_id/addresses/:address_id", func(c *Context) {
 		fmt.Fprintf(c.ResponseWriter, "retrieve user %v’s address %v\n",

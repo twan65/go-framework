@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	r := &router{make(map[string]map[string]HandlerFunc)}
+	r := &router{handlers: make(map[string]map[string]HandlerFunc)}
 
 	r.HandleFunc("GET", "/", func(c *Context) {
 		fmt.Fprintln(c.ResponseWriter, "welcome!")

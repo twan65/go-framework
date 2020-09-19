@@ -26,9 +26,9 @@ func main() {
 			c.Params["user_id"], c.Params["address_id"])
 	})
 
-	r.HandleFunc("POST", "/users", func(c *Context) {
-		fmt.Fprintf(c.ResponseWriter, "create user\n")
-	})
+	r.HandleFunc("POST", "/users", logHandler(recoverHandler(parseFormHandler(parseJsonBodyHandler(func(c *Context) {
+		fmt.Fprintln(c.ResponseWriter, c.Params)
+	})))))
 
 	r.HandleFunc("POST", "/users/:user_id/addresses", func(c *Context) {
 		fmt.Fprintf(c.ResponseWriter, "create user %v’s address\n",

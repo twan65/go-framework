@@ -69,3 +69,7 @@ func (c *Context) RenderTemplate(path string, v interface{}) {
 	// 最終結果をResponseWriterに出力
 	t.Execute(c.ResponseWriter, v)
 }
+
+func (c *Context) Redirect(url string) {
+	http.Redirect(c.ResponseWriter, c.Request, url, http.StatusMovedPermanently)
+}

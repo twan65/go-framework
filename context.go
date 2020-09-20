@@ -3,7 +3,9 @@ package main
 import (
 	"encoding/json"
 	"encoding/xml"
+	"html/template"
 	"net/http"
+	"path/filepath"
 )
 
 type Context struct {
@@ -50,4 +52,20 @@ func (c *Context) RenderErr(code int, err error) {
 			http.Error(c.ResponseWriter, http.StatusText(defaultErr), defaultErr)
 		}
 	}
+}
+
+// テンプレートオブジェクトを保存するためのmap
+var templates = map[string]*template.Template{}
+
+func (c *Context) RenderTemplate(path string, v interface{}) {
+	// pathに該当テンプレートがあるかをチェック
+	t, ok := templates[path]
+	if !ok {
+		// テンプレートオブジェクトを生成
+		t = template.Must(template.ParseFiles(filepath.Join(".", path)))
+		templates[path] = t
+	}
+
+	// 最終結果をResponseWriterに出力
+	t.Execute(c.ResponseWriter, v)
 }

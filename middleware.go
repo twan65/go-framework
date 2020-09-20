@@ -33,11 +33,10 @@ func recoverHandler(next HandlerFunc) HandlerFunc {
 		defer func() {
 			if err := recover(); err != nil {
 				log.Printf("panic: %+v", err)
-				http.Error(c.ResponseWriter,
-					http.StatusText(http.StatusInternalServerError),
-					http.StatusInternalServerError)
+				http.Error(c.ResponseWriter, http.StatusText(http.StatusInternalServerError), http.StatusInternalServerError)
 			}
 		}()
+		next(c)
 	}
 }
 

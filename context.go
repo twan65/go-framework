@@ -3,9 +3,9 @@ package main
 import (
 	"encoding/json"
 	"encoding/xml"
-	"html/template"
 	"net/http"
 	"path/filepath"
+	"text/template"
 )
 
 type Context struct {

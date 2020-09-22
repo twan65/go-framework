@@ -26,33 +26,6 @@ func (r *router) HandleFunc(method, pattern string, h HandlerFunc) {
 	m[pattern] = h
 }
 
-// WebからのリクエストのhttpメソッドとURL経路を分析して該当ハンドラを動作させる。
-// func (r *router) ServeHTTP(w http.ResponseWriter, req *http.Request) {
-// 	// httpメソッドに合うhandlersを繰り返ししてリクエストURLに該当ハンドラを見つける
-// 	for pattern, handler := range r.handlers[req.Method] {
-// 		if ok, params := match(pattern, req.URL.Path); ok {
-// 			// Context生成
-// 			c := Context{
-// 				Params:         make(map[string]interface{}),
-// 				ResponseWriter: w,
-// 				Request:        req,
-// 			}
-
-// 			for k, v := range params {
-// 				c.Params[k] = v
-// 			}
-
-// 			// リクエストURLに該当ハンドラを実行
-// 			handler(&c)
-// 			return
-// 		}
-// 	}
-
-// 	// ハンドラが見つからなかった場合NotFoundエラー処理
-// 	http.NotFound(w, req)
-// 	return
-// }
-
 func (r *router) handler() HandlerFunc {
 	return func(c *Context) {
 		// httpメソッドに合うhandlersを繰り返ししてリクエストURLに該当ハンドラを見つける
